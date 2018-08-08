@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Providers;
+namespace Furbook\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\View;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,7 +14,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        // Using class based composers...
+        View::composer(
+            'partials.forms.cat', 'Furbook\Http\ViewComposers\CatFormComposer'
+        );
     }
 
     /**
