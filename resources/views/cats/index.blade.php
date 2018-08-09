@@ -33,8 +33,16 @@
 			<td>{{$cat->name}}</td>
 			<td>{{$cat->date_of_birth}}</td>
 			<td><a href="/cats/breeds/{{$cat->breed->name}}">{{$cat->breed->name}}</a></td>
-			<td><a href="/cats/{{$cat->id}}/edit" class="btn btn-warning">Edit</a>|<a href="#" class="btn btn-danger">Delete</a></td>
-		</tr>
+			<td><a href="/cats/{{$cat->id}}/edit" class="btn btn-warning">Edit</a></td>
+			<td>
+				<form action="/cats/{{$cat->id}}" method="post" id="delete_form" onsubmit="return confirm('Are you sure?')">
+					<input type="hidden" name="method" value="PUT">
+					<input type="hidden" name="_token" value={{csrf_token()}}>
+					<button type="submit" class="btn btn-danger">Delete</button>
+					<!-- <a href="javascrip:;" onclick="document.getElementById(delete_form).submit();" class="btn btn-danger">Delete</a> -->
+				</form>
+			</td>
+		</tr>	
 		@endforeach
 	</tbody>
 </table>

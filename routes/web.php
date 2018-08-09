@@ -19,19 +19,12 @@ Route::get('/', function(){
 	return redirect('/cats');
 });
 
-Route::get('/cats', function() {
+Route::get('/cats',['use'=>'CatController@index', 'as'=>'cat.index']);
 	//echo "danh sach cat";exit;
 	//$cats = '<h1>List all cats</h1>';
-	$cats = Furbook\Cat::all();
+	
 
-	//cách 1 sử dụng mảng
-	//return view('cats/index', array('cats'=>$cats));
 
-	//cách 2 sử dụng compact function
-	//return view('cats/index', compact(cats));
-	return view('cats/index')->with('cats', $cats);
-
-});
 
 /*//hiển thị chi tiết một con mèo thông qua id
 Route::get('/cats/{id}', function($id) {
@@ -54,40 +47,22 @@ Route::get('cats/breeds/{name}', function($name){
 });
 
 // hiển thị chi tiết một con mèo qua id
-Route::get('/cats/{id}', function($id) {
-	$cat = Furbook\Cat::find($id);
-	return view('cats.show')
-		->with('cat', $cat);
-})->where('id', '[0-9]+');
+Route::get('/cats/{id}', ['use'=>'CatController@show', 'as'=>'cat.show'])->where('id', '[0-9]+');
 
 //create new cat
-Route::get('cats/create', function(){
-	return view('cats.create');
-});
+Route::get('cats/create',['use'=>'CatController@create', 'as'=>'cat.create']);
 
 //insert new cat
-Route::post('/cats', function(){
-	$data = Request::all();
-	$cat = Furbook\Cat::create($data);
-	return redirect('/cats/'.$cat->id)
-	->withSuccess('Create cat success');
-	//dd(Request::all());
-});
+Route::post('/cats', ['use'=>'CatController@store', 'as'=>'cat.store']);
 
 
 //edit cat
-Route::get('/cats/{id}/edit', function($id){
-	$cat = Furbook\Cat::find($id);
-	return view ('cats.edit')->with('cat', $cat);
-});
+Route::get('/cats/{id}/edit', ['use'=>'CatController@edit', 'as'=>'cat.edit']);
 
-Route::put('/cats/{id}', function($id){
-	$data = Request::all();
-	$cat = Furbook\Cat::find($id);
-	$cat->update($data);
-	return redirect('/cats/'.$cat->id)
-	->withSuccess('Cat has been updated success');
-});
+Route::put('/cats/{id}', ['use'=>'CatController@update', 'as'=>'cat.update']);
+
+//delete cat
+Route::delete('cats/{id}', 'CatController@destroy');
 
 
 
