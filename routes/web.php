@@ -10,16 +10,19 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+use Furbook\Breed;
+DB::enableQueryLog();
 /*Route::get('/', function () {
     return view('welcome');
 });*/
+//homepage
 //hiển thị danh sách các con mèo
 Route::get('/', function(){
 	return redirect('/cats');
 });
 
-Route::get('/cats',['use'=>'CatController@index', 'as'=>'cat.index']);
+
+Route::get('/cats', ['uses' => 'CatController@index', 'as' => 'cat.index']);
 	//echo "danh sach cat";exit;
 	//$cats = '<h1>List all cats</h1>';
 	
@@ -38,7 +41,7 @@ Route::get('/cats/{id}', function($id) {
 
 //hiển thị thông tin của một con mèo
 Route::get('cats/breeds/{name}', function($name){
-	$breed = Furbook\Breed::with('cats')
+	$breed = Breed::with('cats')
 	->where('name', $name)
 	->first();
 	return view('cats/index')
@@ -47,22 +50,22 @@ Route::get('cats/breeds/{name}', function($name){
 });
 
 // hiển thị chi tiết một con mèo qua id
-Route::get('/cats/{id}', ['use'=>'CatController@show', 'as'=>'cat.show'])->where('id', '[0-9]+');
+Route::get('/cats/{cat}', ['uses' => 'CatController@show', 'as' => 'cat.show'])->where('cat', '[0-9]+');
 
 //create new cat
-Route::get('cats/create',['use'=>'CatController@create', 'as'=>'cat.create']);
+Route::get('cats/create', ['uses' => 'CatController@create', 'as' => 'cat.create']);
 
 //insert new cat
-Route::post('/cats', ['use'=>'CatController@store', 'as'=>'cat.store']);
+Route::post('/cats', ['uses' => 'CatController@store', 'as' => 'cat.store']);
 
 
 //edit cat
-Route::get('/cats/{id}/edit', ['use'=>'CatController@edit', 'as'=>'cat.edit']);
+Route::get('/cats/{id}/edit', ['uses' => 'CatController@edit', 'as' => 'cat.edit']);
 
-Route::put('/cats/{id}', ['use'=>'CatController@update', 'as'=>'cat.update']);
+Route::put('/cats/{id}', ['uses' => 'CatController@update', 'as' => 'cat.update']);
 
 //delete cat
-Route::delete('cats/{id}', 'CatController@destroy');
+Route::delete('cats/{id}', ['uses' => 'CatController@destroy', 'as' => 'cat.destroy']);
 
 
 
